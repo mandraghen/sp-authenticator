@@ -1,0 +1,28 @@
+{
+  "authentication_key": {
+    "access_key": "signature-test-66289",
+    "customer_uid": "00d25aa7-aa6e-4941-b8af-a18d4d9b8db3",
+    "sequence": 7,
+    "key_type": "RSA_PUBLIC_KEY",
+    "auth_type": "SIGNATURE",
+    "role": "DEVICE",
+    "enable": true,
+    "insert_date": "2017-11-28T15:04:50.000Z",
+    "update_date": "2020-04-06T14:45:49.946Z",
+    "version": 1
+  },
+  "signature": {
+    "key_id": "signature-test-66289",
+    "algorithm": "RSA_SHA256",
+    "headers": [
+      "(request-target)",
+      "date",
+      "digest"
+    ],
+    "signature": "PUiD3S3sSFro0QhCs9f1c8khTmxx+zmihnfqPqBgZ37SNCU3Nya3tEHstdVDvRoPl963b6rxHysaxWYFuykXR2ZVyapPFCZsifSHucfxu999Nn/OY1Gu0SM4uI0PgF0EP92bEN+S5f9fxClenUsxrIPv4z96kg1vmZzQdJ+LRmYoertygkrbowwrkPemHlqf1a1RLJo/Qb7szqvmEnJEm0P86nE/+SghOZYs2szXuBlRUI1uX+fMs9c6rrTuB90P4qrFR9TBZp9PHrrFLUrJFQR+t2b6YcEyKWGqA70OjGNQAeqGuHNPNAed+ciuiWiMBt8DQC/z5PNJxKRMZsaFYg==",
+    "resign_required": true,
+    "valid": true,
+    "iteration_count": 2617
+  },
+  "signed_string": "(request-target): get /wally-services/protocol/tests/signature\ndate: Thu, 12 May 2022 08:13:29 GMT\ndigest: SHA-256=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU="
+}

@@ -1,0 +1,20 @@
+
+http:
+  request:
+    destination:
+      url: https://staging.authservices.satispay.com/wally-services/protocol/tests/signature
+  encrypt:
+    privatekey:
+      path: keys/client-rsa-private-key.pem
+      signature:
+        keyid: signature-test-66289
+sp:
+  encrypt:
+    privatekey:
+      path: keys/client-rsa-private-key.pem
+    signature:
+      keyid: signature-test-66289
+  test:
+    signature:
+      url: https://staging.authservices.satispay.com/wally-services/protocol/tests/signature
+      enabled: true
