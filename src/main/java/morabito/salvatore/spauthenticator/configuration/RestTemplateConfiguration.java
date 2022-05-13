@@ -1,4 +1,4 @@
-package morabito.salvatore.spAuthenticator.configuration;
+package morabito.salvatore.spauthenticator.configuration;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
