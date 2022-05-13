@@ -1,6 +1,10 @@
-package morabito.salvatore.spAuthenticator.constant;
+package morabito.salvatore.spauthenticator.constant;
 
 public class Constants {
+    private Constants() {
+
+    }
+
     public static final String EMPTY_STRING = "";
     public static final String REQUEST_TARGET_HEADER = "(request-target)";
     public static final String HEADER_KEY_SEPARATOR = ": ";

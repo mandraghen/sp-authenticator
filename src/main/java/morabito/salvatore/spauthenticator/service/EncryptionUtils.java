@@ -1,4 +1,4 @@
-package morabito.salvatore.spAuthenticator.service;
+package morabito.salvatore.spauthenticator.service;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -11,7 +11,7 @@ public interface EncryptionUtils {
 
     PrivateKey createPrivateKey(String cleanedKey) throws NoSuchAlgorithmException, InvalidKeySpecException;
 
-    String cleanPKString(StringBuffer keyString);
+    String cleanPKString(StringBuilder keyString);
 
     String signWithRsaSha256(String signatureString, PrivateKey privateKey) throws NoSuchAlgorithmException,
             InvalidKeyException, SignatureException;
