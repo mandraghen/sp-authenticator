@@ -1,4 +1,4 @@
-package morabito.salvatore.spAuthenticator.data.testsignature;
+package morabito.salvatore.spauthenticator.data.testsignature;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,9 +10,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class AuthenticationData {
+public class TestAuthenticationResponseData {
 
     @JsonProperty("authentication_key")
-    private AuthenticationKeyData authenticationKey;
+    private TestAuthenticationKeyData authenticationKey;
     private SignatureData signature;
 }
