@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 public class RestTemplateConfiguration {
 
     @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder builder) {
+    public RestTemplate testApiRestTemplate(RestTemplateBuilder builder) {
         return builder.build();
     }
 
