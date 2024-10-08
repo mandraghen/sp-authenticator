@@ -30,7 +30,7 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-sonarqube {
+sonar {
 	properties {
 		property "sonar.projectKey", "mandraghen_sp-authenticator"
 		property "sonar.organization", "mandraghen"
