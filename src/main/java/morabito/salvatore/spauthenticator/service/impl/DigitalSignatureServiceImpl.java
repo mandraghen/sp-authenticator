@@ -3,6 +3,7 @@ package morabito.salvatore.spauthenticator.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import morabito.salvatore.spauthenticator.constant.Constants;
+import morabito.salvatore.spauthenticator.hook.SignatureHook;
 import morabito.salvatore.spauthenticator.service.DigitalSignatureService;
 import morabito.salvatore.spauthenticator.service.EncryptionUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +24,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.TimeZone;
@@ -42,19 +44,28 @@ public class DigitalSignatureServiceImpl implements DigitalSignatureService {
 
     private final EncryptionUtils encryptionUtils;
 
+    private final List<SignatureHook> signatureHooks;
+
     @Override
     public HttpHeaders createSignHeaders(String destinationUrl, String httpMethod,
                                          HttpHeaders requestHeaders, byte[] body) {
         var signHeaders = new HttpHeaders();
         //add headers
         signHeaders.put("Date", Collections.singletonList(createDateForHeader()));
-        //add digest for empty body
+        //add digest from the body
         signHeaders.put("Digest", Collections.singletonList(encryptionUtils.createSha256Digest(body)));
         //add Authorization header
+        requestHeaders.addAll(signHeaders);
         signHeaders.put("Authorization", Collections.singletonList(
                 createAuthenticationHeader(destinationUrl, httpMethod, requestHeaders)));
 
+        executeHooks(requestHeaders, httpMethod, body);
+
         return signHeaders;
+    }
+
+    private void executeHooks(HttpHeaders httpHeaders, String httpMethod, byte[] body) {
+        signatureHooks.forEach(hook -> hook.execute(httpHeaders, httpMethod, body));
     }
 
     private String createAuthenticationHeader(String destinationUrl, String httpMethod,
@@ -74,16 +85,15 @@ public class DigitalSignatureServiceImpl implements DigitalSignatureService {
         return authHeader.toString();
     }
 
-     private static final BinaryOperator<String> getStringBinaryOperator = (s1, s2) -> s1 + s2;
+    private static final BinaryOperator<String> STRING_BINARY_OPERATOR = (s1, s2) -> s1 + s2;
 
     private String buildRequestTargetHeader(HttpHeaders requestHeaders) {
         var requestTargetHeader = new StringBuilder();
         requestTargetHeader.append("headers=\"(request-target)");
 
         requestHeaders.keySet().stream()
-                .sequential()
                 .map(header -> " " + header.toLowerCase())
-                .reduce(getStringBinaryOperator)
+                .reduce(STRING_BINARY_OPERATOR)
                 .ifPresent(getStringConsumer(requestTargetHeader));
 
         requestTargetHeader.append("\"");
@@ -126,14 +136,13 @@ public class DigitalSignatureServiceImpl implements DigitalSignatureService {
 
         var signatureString = new StringBuilder(requestTargetParameter);
         /* If there are multiple instances of the same header field, all header field values associated with the header
-           field MUST be concatenated, separated by a ASCII comma and an ASCII space ,, and used in the order in which
+           field MUST be concatenated, separated by a ASCII comma and an ASCII space, and used in the order in which
            they will appear in the transmitted HTTP message.
          */
         requestHeaders.forEach((key, value) -> signatureString.append("\n")
                 .append(key.toLowerCase())
                 .append(Constants.HEADER_KEY_SEPARATOR)
-                .append(value.stream()
-                        .reduce((s1, s2) -> s1 + ", " + s2)));
+                .append(String.join(", ", value)));
         log.info("Signature string: " + signatureString);
 
         return signatureString.toString();
